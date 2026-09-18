@@ -61,9 +61,9 @@ header{position:sticky;top:0;background:#0d111bea;padding:14px;backdrop-filter:b
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 </head><body>
 <header><div class="wrap">
-<h1>MYR GAME HUB V20</h1>
+<h1>MYR GAME HUB V21</h1>
 <div class="sub">Pragmatic MYR direct demo + JILI free virtual-credit demos</div>
-<div class="tabs"><button class="tab active" id="pTab" onclick="setProvider('pragmatic')">PRAGMATIC (465)</button>
+<div class="tabs"><button class="tab active" id="pTab" onclick="setProvider('pragmatic')">PRAGMATIC (466)</button>
 <button class="tab" id="jTab" onclick="setProvider('jili')">JILI (217)</button></div>
 <input id="q" placeholder="Search game..." autocomplete="off">
 <div class="stats"><span id="count"></span> games shown</div>
@@ -984,6 +984,10 @@ header{position:sticky;top:0;background:#0d111bea;padding:14px;backdrop-filter:b
 <button class="game pragmatic" data-provider="pragmatic" data-name="magician&#x27;s secrets" onclick="playPragmatic('vs4096magician')">
       <div class="cover pp-fixed-cover pp-v19-cover" data-pp-symbol="vs4096magician" aria-hidden="true"><div class="fallback">Magician&#x27;s Secrets</div></div>
       <div class="meta"><span class="badge">PRAGMATIC</span><div class="name">Magician&#x27;s Secrets</div><div class="id">PRAGMATIC · vs4096magician</div></div>
+    </button>
+<button class="game pragmatic" data-provider="pragmatic" data-name="mahjong wins 3 black scatter" onclick="playPragmatic('vswaysmahwblck')">
+      <div class="cover pp-fixed-cover pp-v19-cover" data-pp-symbol="vswaysmahwblck" aria-hidden="true"><div class="fallback">Mahjong Wins 3 - Black Scatter</div></div>
+      <div class="meta"><span class="badge">PRAGMATIC</span><div class="name">Mahjong Wins 3 - Black Scatter</div><div class="id">PRAGMATIC · vswaysmahwblck</div></div>
     </button>
 <button class="game pragmatic" data-provider="pragmatic" data-name="mahjong wins super scatter" onclick="playPragmatic('vswaysmwss')">
       <div class="cover pp-fixed-cover pp-v19-cover" data-pp-symbol="vswaysmwss" aria-hidden="true"><div class="fallback">Mahjong Wins Super Scatter</div></div>
@@ -2798,7 +2802,7 @@ header{position:sticky;top:0;background:#0d111bea;padding:14px;backdrop-filter:b
       <div class="meta"><span class="badge">JILI TRIAL</span><span class="myr-demo">RM · MYR DISPLAY</span><div class="name">Number King</div><div class="id">JILI · Official ID 111 · Virtual credits</div></div>
     </button>
 </main>
-<div class="note">V20 PRAGMATIC COVER FIX: official-symbol artwork is loaded from multiple supported CDN layouts with timeout, retry, lazy loading, and local cache. Search, provider tabs, MYR demos, and verified JILI artwork remain unchanged. If no matching artwork is available, the correct game title stays visible instead of showing a wrong cover.</div>
+<div class="note">V21: Mahjong Wins 3 - Black Scatter added with its correct Pragmatic demo symbol. The V20 multi-CDN cover fix, timeout, retry, lazy loading, cache, search, MYR demos, and verified JILI artwork remain active.</div>
 <script>
 let provider='pragmatic';
 const items=[...document.querySelectorAll('.game')], q=document.getElementById('q'), count=document.getElementById('count');
