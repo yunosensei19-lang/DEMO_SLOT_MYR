@@ -61,7 +61,7 @@ header{position:sticky;top:0;background:#0d111bea;padding:14px;backdrop-filter:b
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 </head><body>
 <header><div class="wrap">
-<h1>MYR GAME HUB V19</h1>
+<h1>MYR GAME HUB V20</h1>
 <div class="sub">Pragmatic MYR direct demo + JILI free virtual-credit demos</div>
 <div class="tabs"><button class="tab active" id="pTab" onclick="setProvider('pragmatic')">PRAGMATIC (465)</button>
 <button class="tab" id="jTab" onclick="setProvider('jili')">JILI (217)</button></div>
@@ -2798,7 +2798,7 @@ header{position:sticky;top:0;background:#0d111bea;padding:14px;backdrop-filter:b
       <div class="meta"><span class="badge">JILI TRIAL</span><span class="myr-demo">RM · MYR DISPLAY</span><div class="name">Number King</div><div class="id">JILI · Official ID 111 · Virtual credits</div></div>
     </button>
 </main>
-<div class="note">V13 ARTWORK BATCH 1: 43 additional verified JILI covers mapped.  search + provider tabs remain fixed. Verified official provider artwork is used where bundled/mapped; unmapped cards deliberately keep the title fallback rather than showing the wrong game image.</div>
+<div class="note">V20 PRAGMATIC COVER FIX: official-symbol artwork is loaded from multiple supported CDN layouts with timeout, retry, lazy loading, and local cache. Search, provider tabs, MYR demos, and verified JILI artwork remain unchanged. If no matching artwork is available, the correct game title stays visible instead of showing a wrong cover.</div>
 <script>
 let provider='pragmatic';
 const items=[...document.querySelectorAll('.game')], q=document.getElementById('q'), count=document.getElementById('count');
@@ -2929,22 +2929,41 @@ setTimeout(()=>{const a=[...document.querySelectorAll('.auto-jili-cover')].filte
 <script>
 (()=>{
  const els=[...document.querySelectorAll('.pp-v19-cover')];
+ const K='ppArtworkV20';
+ let cache={};try{cache=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}
+ const save=()=>{try{localStorage.setItem(K,JSON.stringify(cache))}catch(e){}};
  const candidates=s=>[
-   `https://pp.gitslotgameicons.com/game_pic/rec/427/${s}.webp`,
    `https://common-static.ppgames.net/game_pic/rec/325/${s}.png`,
+   `https://common-static.ppgames.net/game_pic/rec/325/${s}.webp`,
    `https://common-static.ppgames.net/game_pic/square/200/${s}.png`,
+   `https://common-static.ppgames.net/game_pic/square/200/${s}.webp`,
    `https://common-static.ppgames.net/gs2c/common/lobby/v1/apps/slots-lobby-assets/${s}/${s}_325x234_B.png`,
-   `https://common-static.ppgames.net/gs2c/common/lobby/v1/apps/slots-lobby-assets/${s}/${s}_325x234_NB.png`
+   `https://common-static.ppgames.net/gs2c/common/lobby/v1/apps/slots-lobby-assets/${s}/${s}_325x234_NB.png`,
+   `https://pp.gitslotgameicons.com/game_pic/rec/427/${s}.webp`
  ];
  function load(el){
    const s=el.dataset.ppSymbol;if(!s)return;
-   const a=candidates(s);let i=0;
-   const img=new Image(); img.loading='lazy'; img.referrerPolicy='no-referrer';
-   img.onload=()=>{el.innerHTML='';el.appendChild(img)};
-   img.onerror=()=>{i++;if(i<a.length)img.src=a[i]};
-   img.src=a[0];
+   const a=cache[s]?[cache[s],...candidates(s).filter(u=>u!==cache[s])]:candidates(s);
+   let i=0,timer;
+   const next=()=>{
+     clearTimeout(timer);
+     if(i>=a.length)return;
+     const url=a[i++],img=new Image();
+     img.loading='lazy';img.referrerPolicy='no-referrer';
+     img.onload=()=>{clearTimeout(timer);cache[s]=url;save();el.innerHTML='';el.appendChild(img)};
+     img.onerror=next;
+     timer=setTimeout(next,4500);
+     img.src=url;
+   };
+   next();
  }
- els.forEach(load);
+ const pending=[];let active=0;
+ const pump=()=>{while(active<8&&pending.length){active++;const el=pending.shift();load(el);setTimeout(()=>{active--;pump()},250)}};
+ const queue=el=>{if(el.dataset.ppQueued)return;el.dataset.ppQueued='1';pending.push(el);pump()};
+ if('IntersectionObserver'in window){
+   const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){queue(x.target);io.unobserve(x.target)}}),{rootMargin:'900px 0px'});
+   els.forEach(el=>{if(cache[el.dataset.ppSymbol])load(el);else io.observe(el)});
+ }else els.forEach(queue);
 })();
 </script>
 </body></html>
