@@ -61,7 +61,7 @@ header{position:sticky;top:0;background:#0d111bea;padding:14px;backdrop-filter:b
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 </head><body>
 <header><div class="wrap">
-<h1>MYR GAME HUB V15</h1>
+<h1>MYR GAME HUB V16</h1>
 <div class="sub">Pragmatic MYR direct demo + JILI free virtual-credit demos</div>
 <div class="tabs"><button class="tab active" id="pTab" onclick="setProvider('pragmatic')">PRAGMATIC (465)</button>
 <button class="tab" id="jTab" onclick="setProvider('jili')">JILI (217)</button></div>
@@ -2889,4 +2889,12 @@ if ('serviceWorker' in navigator) {
 })();
 </script>
 
+<script>
+(()=>{const K='jiliV16Fallback';let c={};try{c=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(c))}catch(e){}};
+const ex=t=>{const a=[...t.matchAll(/https:\/\/storage\.googleapis\.com\/tada-cdn-asia\/[^\s)"'<>\\]+/g)].map(x=>x[0]);return a.find(u=>/\/jiliPlusPlayer\/games\//i.test(u)&&/\.(png|jpe?g|webp)(\?|$)/i.test(u))||a.find(u=>/\.(png|jpe?g|webp)(\?|$)/i.test(u))};
+async function go(e){if(e.querySelector('img'))return;const id=e.dataset.jiliId;if(!id)return;if(c[id]){e.innerHTML=`<img src="${c[id]}" alt="Official JILI artwork" loading="lazy">`;return}
+for(const p of [`https://jiligames.com/PlusIntro/${id}`,`https://jiligames.com/PlusIntro/${id}?showGame=true`,`https://jiligames.com/PlusTrial/${id}/en-us`])for(const x of [`https://r.jina.ai/${p}`,`https://r.jina.ai/http://${p.replace(/^https?:\/\//,'')}`])try{const r=await fetch(x,{cache:'force-cache'});if(!r.ok)continue;const u=ex(await r.text());if(u){c[id]=u;save();e.innerHTML=`<img src="${u}" alt="Official JILI artwork" loading="lazy">`;return}}catch(_){}}
+setTimeout(()=>{const a=[...document.querySelectorAll('.auto-jili-cover')].filter(e=>!e.querySelector('img'));let i=0;function q(){for(let n=0;n<8&&i<a.length;n++,i++)go(a[i]);if(i<a.length)setTimeout(q,700)}q()},4000)})();
+</script>
 </body></html>
